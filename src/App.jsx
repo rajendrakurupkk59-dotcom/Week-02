@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 function ServiceCard(props) {
   return (
     <div>
@@ -18,6 +18,21 @@ function Counter() {
     </div>
   );
 }
+function Timer() {
+  const [seconds, setSeconds] = useState(0);
+  useEffect(() => {
+    document.title = "Seconds: " + seconds;
+  }, [seconds]);
+  return (
+    <div>
+      <h2>Seconds: {seconds}</h2>
+      <button onClick={() => setSeconds(seconds + 1)}>
+        Add Second
+      </button>
+    </div>
+  );
+}
+
 function App() {
   return (
     <div>
@@ -26,6 +41,7 @@ function App() {
       <ServiceCard name="SEO" price="5000" />
       <ServiceCard name="Branding" price="8000" />
        <Counter />
+       <Timer />
     </div>
     
   );
