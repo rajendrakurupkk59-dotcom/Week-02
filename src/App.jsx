@@ -1,49 +1,52 @@
 import { useState, useEffect } from "react";
-function ServiceCard(props) {
+function ClientCard(props) {
   return (
-    <div>
+    <div style={{ border: "1px solid #ccc", margin: "10px", padding: "10px" }}>
       <h2>{props.name}</h2>
-      <p>Price: ₹{props.price}</p>
-    </div>
-  );
-}
-function Counter() {
-    const [count, setCount] = useState(0);
-    return (
-    <div>
-      <h2>Count: {count}</h2>
-        <button onClick={() => setCount(count + 1)}>
-          Add One
-      </button>
-    </div>
-  );
-}
-function Timer() {
-  const [seconds, setSeconds] = useState(0);
-  useEffect(() => {
-    document.title = "Seconds: " + seconds;
-  }, [seconds]);
-  return (
-    <div>
-      <h2>Seconds: {seconds}</h2>
-      <button onClick={() => setSeconds(seconds + 1)}>
-        Add Second
-      </button>
+      <p>Email: {props.email}</p>
+      <p>City: {props.address.city}</p>
+      <p>Company: {props.company.name}</p>
     </div>
   );
 }
 
 function App() {
+  const [clients, setClients] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchClients() {
+      try {
+        let response = await fetch("https://jsonplaceholder.typicode.com/users");
+        let data = await response.json();
+        setClients(data);
+        setLoading(false);
+      } catch (error) {
+        console.log("Error:", error.message);
+        setLoading(false);
+      }
+    }
+    fetchClients();
+  }, []);
+  if (loading) {
+    return <h2>Loading clients...</h2>;
+  }
   return (
     <div>
-      <h1>Nexus360 Services</h1>
-      <ServiceCard name="Web Design" price="10000" />
-      <ServiceCard name="SEO" price="5000" />
-      <ServiceCard name="Branding" price="8000" />
-       <Counter />
-       <Timer />
-    </div>
-    
-  );
-}
+      <h1>Nexus360 Client List</h1>
+      {clients.map((client) => (
+         <ClientCard 
+         key={client.id}
+         name={client.name}
+          email={client.email}
+          address={client.address}
+          company={client.company}
+          />
+      ))}
+      </div>
+           );
+                   }
 export default App;
+  
+
+  
