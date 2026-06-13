@@ -1,50 +1,81 @@
 import { useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import "./App.css";
-function ClientCard(props) {
+function Home() {
   return (
-    <div className="card">
-      <h2>{props.name}</h2>
-      <p>Email: {props.email}</p>
-      <p>City: {props.address.city}</p>
-      <p>Company: {props.company.name}</p>
-     </div>
-
+    <div className="container">
+      <h1>Welcome to Nexus360</h1>
+      <p>Your trusted consulting partner.</p>
+      </div>
+  );
+}
+function Services() {
+  return (
+    <div className="container">
+      <h1>Our Services</h1>
+      <div className="card">
+        <h2>Web Design</h2>
+        <p>Price: ₹10000</p>
+        </div>
+      <div className="card">
+        <h2>SEO</h2>
+        <p>Price: ₹5000</p>
+      </div>
+      <div className="card">
+        <h2>Branding</h2>
+        <p>Price: ₹8000</p>
+      </div>
+    </div>
+  
+  );
+}
+function About() {
+  return (
+    <div className="container">
+      <h1>About Nexus360</h1>
+      <p>We are a consulting firm focused on MSME and Hospital sectors.</p>
+      </div>
   );
 }
 function App() {
-  const [clients, setClients] = useState([]);
-  const [loading, setLoading] = useState(true);
-useEffect(() => {
-  async function fetchClients() {
-    try {
-      let response = await fetch("https://jsonplaceholder.typicode.com/users");
-let data = await response.json();
-setClients(data);
-setLoading(false);
-    } catch (error) {
-      console.log("Error:", error.message);
-      setLoading(false);
+  return (
+    <BrowserRouter>
+      <nav style={{
+        backgroundColor: "#1B3A6B",
+        padding: "15px",
+        textAlign: "center",
+      }}>
+        <Link to="/" style={{
+          color: "white",
+          margin: "0 20px",
+          textDecoration: "none",
+          fontWeight: "bold"
+        }}>Home</Link>
+        <Link to="/services" style={{
+          color: "white",
+          margin: "0 20px",
+          textDecoration: "none",
+          fontWeight: "bold"
+        }}>Services</Link>
+        <Link to="/about" style={{
+          color: "white",
+          margin: "0 20px",
+          textDecoration: "none",
+          fontWeight: "bold"
+        }}>About</Link>
+      </nav>
+      <Routes>
+           <Route path="/" element={<Home />} />
+           <Route path="/services" element={<Services />} />
+           <Route path="/about" element={<About />} />
+      </Routes>
+    </BrowserRouter>
+      );
     }
-  }
-  fetchClients();
-}, []);
-if (loading) {
-  return <h2>Loading clients...</h2>;
 
-}
-return (
-  <div className="container">
-    <h1>Nexus360 Client List</h1>
-    {clients.map(client => (
-      <ClientCard
-      key={client.id}
-      name={client.name}
-      email={client.email}
-      address={client.address}
-      company={client.company}
-    />
-    ))}
-</div>
-);
-}
-export default App;
+    export default App;
+
+
+
+
+       
